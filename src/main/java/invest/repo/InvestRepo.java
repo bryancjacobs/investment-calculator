@@ -1,9 +1,8 @@
 package invest.repo;
 
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
+import com.jayway.jsonpath.JsonPath;
+import net.minidev.json.JSONArray;
 import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.client.RestTemplate;
@@ -16,7 +15,7 @@ import org.springframework.web.client.RestTemplate;
 @Repository
 public class InvestRepo {
 
-    public static final String URL = "https://query.yahooapis.com/v1/public/yql?q=select * from yahoo.finance.historicaldata where symbol = \"YHOO\" and startDate = \"2009-09-11\" and endDate = \"2010-03-10\"&format=json&env=store://datatables.org/alltableswithkeys&callback=";
+    public static final String URL = "https://query.yahooapis.com/v1/public/yql?q=select * from yahoo.finance.historicaldata where symbol in (\"YHOO\", \"fselx\") and startDate = \"2014-01-11\" and endDate = \"2014-03-10\"&format=json&env=store://datatables.org/alltableswithkeys&callback=";
 
 
     @Autowired
@@ -27,21 +26,15 @@ public class InvestRepo {
 
     public String getAll() {
 
-        String s = restTemplate.getForObject(URL, String.class, null);
-        System.out.println(s);
+        String s = restTemplate.getForObject(URL, String.class);
 
+        JSONArray yahoo = JsonPath.read(s, "$.query.results.quote[?(@.Symbol == 'YHOO')]");
+        System.out.println(yahoo.size());
 
-        try {
-            JSONObject jsonObject = (JSONObject)jsonParser.parse(s);
-            JSONObject query = (JSONObject)jsonObject.get("query");
-            JSONObject results = (JSONObject)query.get("results");
-            JSONArray quotes = (JSONArray) results.get("quote");
+        JSONArray fselx = JsonPath.read(s, "$.query.results.quote[?(@.Symbol == 'fselx')]");
+        System.out.println(fselx.size());
 
-            System.out.println(quotes.size());
-            System.out.println(quotes);
-        } catch (ParseException e) {
-            throw new RuntimeException("Unable to parse results from yql: " + s);
-        }
+        System.out.println("TOtal: " + (fselx.size() + yahoo.size()));
 
         return null;
     }
