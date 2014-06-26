@@ -1,5 +1,7 @@
 package invest.repo;
 
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,18 +16,29 @@ import org.springframework.web.client.RestTemplate;
 @Repository
 public class InvestRepo {
 
-    public static final String URL = "https://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20yahoo.finance.historicaldata%20where%20symbol%20%3D%20%22YHOO%22%20and%20startDate%20%3D%20%222009-09-11%22%20and%20endDate%20%3D%20%222010-03-10%22&format=json&env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys&callback=";
+    public static final String URL = "https://query.yahooapis.com/v1/public/yql?q=select * from yahoo.finance.historicaldata where symbol = \"YHOO\" and startDate = \"2009-09-11\" and endDate = \"2010-03-10\"&format=json&env=store://datatables.org/alltableswithkeys&callback=";
+
+
     @Autowired
     RestTemplate restTemplate;
 
-    JSONParser jsonParser = new JSONParser();
+    @Autowired
+    JSONParser jsonParser;
 
     public String getAll() {
 
         String s = restTemplate.getForObject(URL, String.class, null);
+        System.out.println(s);
+
 
         try {
-            jsonParser.parse(s);
+            JSONObject jsonObject = (JSONObject)jsonParser.parse(s);
+            JSONObject query = (JSONObject)jsonObject.get("query");
+            JSONObject results = (JSONObject)query.get("results");
+            JSONArray quotes = (JSONArray) results.get("quote");
+
+            System.out.println(quotes.size());
+            System.out.println(quotes);
         } catch (ParseException e) {
             throw new RuntimeException("Unable to parse results from yql: " + s);
         }
