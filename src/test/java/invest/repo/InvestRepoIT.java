@@ -1,6 +1,7 @@
 package invest.repo;
 
 import invest.Application;
+import invest.model.Funds;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,11 +18,12 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 public class InvestRepoIT {
 
     @Autowired
-    InvestRepo investRepo;
+    FundRepo investRepo;
 
     @Test
-    public void getInvest(){
-        investRepo.getAll();
+    public void getInvest() {
+        Funds funds = investRepo.getAll();
+        System.out.println(funds);
     }
 
 }

@@ -1,10 +1,12 @@
 package invest.rest;
 
-import invest.service.InvestService;
+import invest.model.Funds;
+import invest.service.FundService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+
 
 /**
  * User: Bryan
@@ -12,14 +14,14 @@ import org.springframework.web.bind.annotation.RestController;
  * Time: 8:41 PM
  */
 @RestController
-@RequestMapping("/invest")
-public class InvestRest {
+@RequestMapping("/fund")
+public class FundRest {
 
     @Autowired
-    InvestService investService;
+    FundService fundService;
 
     @RequestMapping(method = RequestMethod.GET)
-    public String getAll(){
-        return investService.getAll();
+    public Funds getWithPercentageChange() {
+        return fundService.getWithPercentageChange();
     }
 }
