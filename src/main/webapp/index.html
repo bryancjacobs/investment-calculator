@@ -1,0 +1,20 @@
+<html ng-app>
+    <head>
+        <script type="text/javascript" src="angular.min.js"></script>
+        <script type="text/javascript" src="fundController.js"></script>
+    </head>
+    <body>
+        <div ng-controller="FundController">
+            <div ng-repeat="funds in fundContainer">
+                <div ng-repeat="fund in funds">
+                    {{fund.name}}
+                    <div ng-repeat="quotes in fund.quotes">
+                        <div ng-repeat="quote in quotes">
+                            {{quote.change}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
