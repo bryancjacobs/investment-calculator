@@ -1,9 +1,10 @@
 package invest.repo;
 
 import com.jayway.jsonpath.JsonPath;
+import invest.model.Fund;
 import invest.model.FundType;
-import invest.model.Funds;
-import invest.model.Quotes;
+import invest.model.Quote;
+import invest.util.DateUtil;
 import net.minidev.json.JSONArray;
 import net.minidev.json.JSONObject;
 import org.joda.time.DateTime;
@@ -11,7 +12,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import static invest.util.DateUtil.toStr;
 import static java.lang.String.format;
@@ -29,7 +32,7 @@ public class FundRepo {
     @Autowired
     RestTemplate restTemplate;
 
-    public Funds getAll() {
+    public List<Fund> getAll() {
 
         Date now = new Date();
 
@@ -37,25 +40,35 @@ public class FundRepo {
 
         String json = restTemplate.getForObject(format(URL, FundType.commaSeparated(), toStr(nowMinusThreeMonths), toStr(now)), String.class);
 
+        List<Fund> funds = new ArrayList<>();
 
-        Funds funds = new Funds();
         for (FundType fundType : FundType.values()) {
-            Quotes quotes = create(json, format("$.query.results.quote[?(@.Symbol == '%s')]", fundType.name()));
-            funds.add(fundType, quotes);
+            List<Quote> quotes = create(json, format("$.query.results.quote[?(@.Symbol == '%s')]", fundType.name()));
+            Fund fund = new Fund();
+            fund.setName(fundType.name());
+            fund.setQuotes(quotes);
+            funds.add(fund);
         }
 
         return funds;
     }
 
-    private Quotes create(String json, String query) {
+    private List<Quote> create(String json, String query) {
 
         JSONArray jsonArray = JsonPath.read(json, query);
 
-        Quotes quotes = Quotes.instance();
+        List<Quote> quotes = new ArrayList<>();
 
         for (Object aJsonArray : jsonArray) {
-            JSONObject quote = (JSONObject) aJsonArray;
-            quotes.add((String) quote.get("Adj_Close"), (String) quote.get("Date"));
+            JSONObject jsonQuote = (JSONObject) aJsonArray;
+
+            Quote quote = new Quote();
+            quote.setAdjusted(Double.valueOf((String)jsonQuote.get("Adj_Close")));
+            quote.setDate(DateUtil.toDate((String)jsonQuote.get("Date")));
+
+            if (quote.isWednesday()) {
+                quotes.add(quote);
+            }
         }
 
         return quotes;

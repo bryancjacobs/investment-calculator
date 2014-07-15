@@ -1,20 +1,47 @@
-<html ng-app>
+<html ng-app="main">
     <head>
         <script type="text/javascript" src="angular.min.js"></script>
         <script type="text/javascript" src="fundController.js"></script>
+        <script type="text/javascript" src="ng-table.js"></script>
+        <link rel="stylesheet" type="text/css" href="bootstrap.min.css">
+        <link rel="stylesheet" type="text/css" href="ng-table.css">
+
     </head>
     <body>
-        <div ng-controller="FundController">
-            <div ng-repeat="funds in fundContainer">
-                <div ng-repeat="fund in funds">
-                    {{fund.name}}
-                    <div ng-repeat="quotes in fund.quotes">
-                        <div ng-repeat="quote in quotes">
-                            {{quote.change}}
-                        </div>
-                    </div>
-                </div>
-            </div>
+        <div ng-controller="DemoCtrl">
+            <!--<div ng-repeat="funds in data">-->
+                <!--<div ng-repeat="fund in funds">-->
+                    <!--{{fund.name}}-->
+                    <!--<div ng-repeat="quotes in fund.quotes">-->
+                        <!--<div ng-repeat="quote in quotes">-->
+                            <!--{{quote.change}}-->
+                        <!--</div>-->
+                    <!--</div>-->
+                <!--</div>-->
+            <!--</div>-->
+            <!---->
+            <!--<table ng-table="tableParams" class="table">-->
+                <!--<tr ng-repeat="user in $data">-->
+                    <!--<td data-title="'Name'" sortable="'name'">-->
+                        <!--{{user.name}}-->
+                    <!--</td>-->
+                    <!--<td data-title="'Age'" sortable="'age'">-->
+                        <!--{{user.age}}-->
+                    <!--</td>-->
+                <!--</tr>-->
+            <!--</table>-->
+            <!--<table ng-table="tableParams" class="table">-->
+                <!--<tr ng-repeat="fund in $data">-->
+                    <!--<td data-title="'Name'" sortable="'name'">-->
+                        <!--{{fund.name}}-->
+                    <!--</td>-->
+
+                    <!--<td ng-repeat="quote in fund.quotes" data-title="'Change'" sortable="'change'">-->
+                        <!--{{quote.change | number:2}}-->
+                    <!--</td>-->
+                <!--</tr>-->
+            <!--</table>-->
+
         </div>
     </body>
 </html>

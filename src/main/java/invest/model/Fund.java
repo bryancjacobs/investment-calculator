@@ -1,5 +1,8 @@
 package invest.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * User: Bryan
  * Date: 6/27/14
@@ -9,7 +12,7 @@ public class Fund {
 
     private String name;
 
-    private Quotes quotes = new Quotes();
+    private List<Quote> quotes = new ArrayList<>();
 
     public String getName() {
         return name;
@@ -19,11 +22,11 @@ public class Fund {
         this.name = name;
     }
 
-    public Quotes getQuotes() {
+    public List<Quote> getQuotes() {
         return quotes;
     }
 
-    public void setQuotes(Quotes quotes) {
+    public void setQuotes(List<Quote> quotes) {
         this.quotes = quotes;
     }
 

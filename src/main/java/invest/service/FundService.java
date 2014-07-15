@@ -1,12 +1,12 @@
 package invest.service;
 
 import invest.model.Fund;
-import invest.model.Funds;
 import invest.model.Quote;
-import invest.model.Quotes;
 import invest.repo.FundRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * User: Bryan
@@ -19,16 +19,15 @@ public class FundService {
     @Autowired
     FundRepo fundRepo;
 
-    public Funds getWithPercentageChange() {
+    public List<Fund> getWithPercentageChange() {
 
-        Funds funds = fundRepo.getAll();
+        List<Fund> funds = fundRepo.getAll();
 
-        for (Fund fund : funds.getFunds()) {
-
+        for (Fund fund : funds) {
 
             int limit = fund.getQuotes().size() - 1;
 
-            Quotes quotes = fund.getQuotes();
+            List<Quote> quotes = fund.getQuotes();
 
             for (int i = 0; i <= limit; i++) {
 

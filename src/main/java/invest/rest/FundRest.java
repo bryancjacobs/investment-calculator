@@ -1,11 +1,13 @@
 package invest.rest;
 
-import invest.model.Funds;
+import invest.model.Fund;
 import invest.service.FundService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 
 /**
@@ -21,7 +23,7 @@ public class FundRest {
     FundService fundService;
 
     @RequestMapping(method = RequestMethod.GET)
-    public Funds getWithPercentageChange() {
+    public List<Fund> getWithPercentageChange() {
         return fundService.getWithPercentageChange();
     }
 }
