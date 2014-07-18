@@ -164,13 +164,14 @@ app.controller('DemoCtrl', function($scope, $filter, ngTableParams) {
 //        {name: "Enos", age: 34}];
 
     $scope.tableParams = new ngTableParams({
-        page: 1,            // show first page
-        count: 100,          // count per page
-        sorting: {
-            name: 'asc'     // initial sorting
+            page: 1,            // show first page
+            count: 100,          // count per page
+            sorting: {
+                name: 'asc'     // initial sorting
 
-        }
-    }, {
+            }
+        },
+        {
         total: data.length, // length of data
         getData: function($defer, params) {
             // use build-in angular filter
