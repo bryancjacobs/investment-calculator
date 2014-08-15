@@ -8,30 +8,62 @@
     <link rel="stylesheet" href="bootstrap.min.css">
 
     <script src="jquery-2.1.1.min.js"></script>
+    <script src="sorttable.js"></script>
 
     <script>
         $(document).ready(function () {
 
-            $.getJSON("http://localhost:8080/", function (data) {
+            $.getJSON("http://localhost:8080/fund", function (data) {
 
+                var content = $('#content');
+
+                var table = $("<table></table>").addClass("table sortable");
+
+                content.append(table);
+
+                $.each(data, function (key, val) {
+
+                    console.log("name: " + val.name);
+
+                    // conditionally construct the header information
+                    // the idea is that we only create the header if its not already there
+                    if ($("#table-data").length == 0) {
+
+                        var thead = $("<thead id='table-data'></thead>");
+                        table.append(thead);
+
+                        // construct the header info if needed
+                        var trHead = $("<tr/>");
+                        thead.append(trHead);
+                        var thName = $("<th/>").text("Name");
+                        trHead.append(thName);
+
+
+                        $.each(val.quotes, function (key, val) {
+                            var thAdjusted = $("<th/>").text("Week " + key);
+                            trHead.append(thAdjusted);
+                        });
+                    }
+
+
+                    // construct the actual data
+                    var tr = $("<tr/>");
+                    table.append(tr);
+                    var nameTd = $("<td/>").text(val.name);
+                    tr.append(nameTd);
+
+                    $.each(val.quotes, function (key, val) {
+                        // construct data
+                        var adjustedTd = $("<td/>").text(val.adjusted);
+                        tr.append(adjustedTd);
+
+                        console.log("val: " + val.adjusted);
+                    });
+                });
+
+                sorttable.makeSortable(table[0]);
             });
-
-            var content = $("#content");
-
-            var table = $('<table>').addClass('table');
-            for (var i = 0; i < 3; i++) {
-                var tr = $('<tr>');
-
-                var td = $("<td></td>").text('result ' + i);
-
-                tr.append(td);
-
-                table.append(tr);
-            }
-
-            content.append(table);
         });
-
     </script>
 
 </head>
@@ -39,23 +71,7 @@
 
 <h1>Dynamic columns</h1>
 
-<div id="content">
-
-</div>
-
-<table class="table">
-    <thead>
-    <tr>
-        <th>Month</th>
-        <th>Savings</th>
-    </tr>
-    </thead>
-    <tr>
-        <td>afd</td>
-        <td>asdfasdfasdf</td>
-    </tr>
-</table>
-
+<div id="content"></div>
 
 </body>
 </html>
