@@ -7,8 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.util.List;
+
+import static invest.util.BigDecimalUtil.create;
 
 /**
  * User: Bryan
@@ -31,6 +32,8 @@ public class FundService {
 
             List<Quote> quotes = fund.getQuotes();
 
+            double total = 0.0;
+
             for (int i = 0; i <= limit; i++) {
 
                 if (i == limit) {
@@ -46,14 +49,17 @@ public class FundService {
                 Double newAdjusted = next.getAdjusted();
 
                 // calculate percentage increase - if negative then we have percentage decrease
-                BigDecimal change = new BigDecimal(((newAdjusted - originalAdjusted) / originalAdjusted) * 100)
-                        .setScale(2, RoundingMode.HALF_UP);
+                BigDecimal change = create(((newAdjusted - originalAdjusted) / originalAdjusted) * 100);
 
                 current.setChange(change.doubleValue());
+
+                total += current.getChange();
             }
+
+            BigDecimal averageChange = create(total / quotes.size());
+            fund.setAverageChange(averageChange.doubleValue());
         }
 
         return funds;
-
     }
 }
