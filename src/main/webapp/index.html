@@ -40,8 +40,13 @@
 
 
                         $.each(val.quotes, function (key, val) {
-                            var thAdjusted = $("<th/>").text("Week " + key);
-                            trHead.append(thAdjusted);
+                            var week = (key + 1);
+
+                            // there is one extra dataset that we aren't interested in
+                            if (week < 13) {
+                                var thAdjusted = $("<th/>").text("Week " + week);
+                                trHead.append(thAdjusted);
+                            }
                         });
                     }
 
@@ -54,7 +59,7 @@
 
                     $.each(val.quotes, function (key, val) {
                         // construct data
-                        var adjustedTd = $("<td/>").text(val.adjusted);
+                        var adjustedTd = $("<td/>").text(val.change);
                         tr.append(adjustedTd);
 
                         console.log("val: " + val.adjusted);
@@ -69,7 +74,7 @@
 </head>
 <body>
 
-<h1>Dynamic columns</h1>
+<h1>Fidelity Sector Fund Comparisons</h1>
 
 <div id="content"></div>
 

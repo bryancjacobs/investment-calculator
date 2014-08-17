@@ -37,19 +37,40 @@ public class FundRepo {
         Date now = new Date();
 
         Date nowMinusThreeMonths = new DateTime().minusMonths(3).toDate();
+        String start = toStr(nowMinusThreeMonths);
+        String end = toStr(now);
 
-        String json = restTemplate.getForObject(format(URL, FundType.commaSeparated(), toStr(nowMinusThreeMonths), toStr(now)), String.class);
+        // first request
+        String commaSeparated = FundType.commaSeparated(0, 19);
+        String formattedUrl = format(URL, commaSeparated, start, end);
+        String json = restTemplate.getForObject(formattedUrl, String.class);
+        List<Fund> funds = getFunds(json, commaSeparated);
 
+        // second request
+        commaSeparated = FundType.commaSeparated(20, 39);
+        formattedUrl = format(URL, commaSeparated, start, end);
+        json = restTemplate.getForObject(formattedUrl, String.class);
+        funds.addAll(getFunds(json, commaSeparated));
+
+        // final request
+        commaSeparated = FundType.commaSeparated(40, 45);
+        formattedUrl = format(URL, commaSeparated, start, end);
+        json = restTemplate.getForObject(formattedUrl, String.class);
+        funds.addAll(getFunds(json, commaSeparated));
+
+        return funds;
+    }
+
+    private List<Fund> getFunds(String json, String commaSeparated) {
         List<Fund> funds = new ArrayList<>();
 
-        for (FundType fundType : FundType.values()) {
+        for (FundType fundType : FundType.commaToFundTypes(commaSeparated)) {
             List<Quote> quotes = create(json, format("$.query.results.quote[?(@.Symbol == '%s')]", fundType.name()));
             Fund fund = new Fund();
             fund.setName(fundType.name());
             fund.setQuotes(quotes);
             funds.add(fund);
         }
-
         return funds;
     }
 
@@ -63,8 +84,8 @@ public class FundRepo {
             JSONObject jsonQuote = (JSONObject) aJsonArray;
 
             Quote quote = new Quote();
-            quote.setAdjusted(Double.valueOf((String)jsonQuote.get("Adj_Close")));
-            quote.setDate(DateUtil.toDate((String)jsonQuote.get("Date")));
+            quote.setAdjusted(Double.valueOf((String) jsonQuote.get("Adj_Close")));
+            quote.setDate(DateUtil.toDate((String) jsonQuote.get("Date")));
 
             if (quote.isWednesday()) {
                 quotes.add(quote);

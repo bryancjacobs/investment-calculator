@@ -6,6 +6,8 @@ import invest.repo.FundRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.List;
 
 /**
@@ -44,7 +46,10 @@ public class FundService {
                 Double newAdjusted = next.getAdjusted();
 
                 // calculate percentage increase - if negative then we have percentage decrease
-                current.setChange(((newAdjusted - originalAdjusted) / originalAdjusted) * 100);
+                BigDecimal change = new BigDecimal(((newAdjusted - originalAdjusted) / originalAdjusted) * 100)
+                        .setScale(2, RoundingMode.HALF_UP);
+
+                current.setChange(change.doubleValue());
             }
         }
 
