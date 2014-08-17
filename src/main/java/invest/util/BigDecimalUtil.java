@@ -10,8 +10,10 @@ import java.math.RoundingMode;
  */
 public class BigDecimalUtil {
 
-    public static BigDecimal create(Double value) {
-        return new BigDecimal(value).setScale(2, RoundingMode.HALF_UP);
+    public static final RoundingMode ROUND = RoundingMode.HALF_UP;
+
+    public static BigDecimal newBigDecimal(Double value) {
+        return BigDecimal.valueOf(value).setScale(2, ROUND);
     }
 
 }

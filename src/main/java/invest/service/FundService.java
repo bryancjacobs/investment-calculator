@@ -3,13 +3,14 @@ package invest.service;
 import invest.model.Fund;
 import invest.model.Quote;
 import invest.repo.FundRepo;
+import invest.util.BigDecimalUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.util.List;
 
-import static invest.util.BigDecimalUtil.create;
+import static invest.util.BigDecimalUtil.newBigDecimal;
 
 /**
  * User: Bryan
@@ -32,7 +33,7 @@ public class FundService {
 
             List<Quote> quotes = fund.getQuotes();
 
-            double total = 0.0;
+            BigDecimal total = newBigDecimal(0.0);
 
             for (int i = 0; i <= limit; i++) {
 
@@ -49,14 +50,16 @@ public class FundService {
                 Double newAdjusted = next.getAdjusted();
 
                 // calculate percentage increase - if negative then we have percentage decrease
-                BigDecimal change = create(((newAdjusted - originalAdjusted) / originalAdjusted) * 100);
+                BigDecimal change = newBigDecimal(((newAdjusted - originalAdjusted) / originalAdjusted) * 100);
 
                 current.setChange(change.doubleValue());
 
-                total += current.getChange();
+                total = total.add(BigDecimal.valueOf(current.getChange()));
             }
 
-            BigDecimal averageChange = create(total / quotes.size());
+            // subtract one from the collection because the changes only have 12 since the last week has nothing to compare
+            BigDecimal averageChange = total.divide(BigDecimal.valueOf(quotes.size() - 1), 2, BigDecimalUtil.ROUND);
+
             fund.setAverageChange(averageChange.doubleValue());
         }
 
