@@ -26,8 +26,8 @@ public class DateUtil {
         }
     }
 
-    public static String toStr(Date date) {
-        return dayOfWeek.format(date);
+    public static String toStr(DateTime date) {
+        return dayOfWeek.format(date.toDate());
 
     }
 

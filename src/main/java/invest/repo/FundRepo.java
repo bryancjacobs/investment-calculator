@@ -33,8 +33,8 @@ public class FundRepo {
 
     public List<Fund> getBetween(DateTime start, DateTime end) {
 
-        String startStr = toStr(start.toDate());
-        String endStr = toStr(end.toDate());
+        String startStr = toStr(start);
+        String endStr = toStr(end);
 
         // first request
         String commaSeparated = FundType.commaSeparated(0, 19);

@@ -5,8 +5,6 @@ import org.joda.time.DateTime;
 import org.joda.time.DateTimeFieldType;
 import org.junit.Test;
 
-import java.util.Calendar;
-
 import static org.junit.Assert.assertTrue;
 
 /**
@@ -18,12 +16,9 @@ public class DateUtilTest {
 
     @Test
     public void shouldGetDateWithTuesday() {
-        Calendar c = Calendar.getInstance();
-        c.set(Calendar.MONTH, 5);
-        c.set(Calendar.DAY_OF_MONTH, 3);
-        c.set(Calendar.YEAR, 2014);
 
-        String date = DateUtil.toStr(c.getTime());
+        DateTime dateTime = new DateTime(2014, 6, 3, 10, 0);
+        String date = DateUtil.toStr(dateTime);
         assertTrue(date.toLowerCase().contains("tuesday"));
     }
 
