@@ -13,7 +13,6 @@ import org.springframework.stereotype.Repository;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import static invest.util.DateUtil.toStr;
@@ -32,29 +31,26 @@ public class FundRepo {
     @Autowired
     RestTemplate restTemplate;
 
-    public List<Fund> getAll() {
+    public List<Fund> getBetween(DateTime start, DateTime end) {
 
-        Date now = new Date();
-
-        Date nowMinusThreeMonths = new DateTime().minusMonths(3).toDate();
-        String start = toStr(nowMinusThreeMonths);
-        String end = toStr(now);
+        String startStr = toStr(start.toDate());
+        String endStr = toStr(end.toDate());
 
         // first request
         String commaSeparated = FundType.commaSeparated(0, 19);
-        String formattedUrl = format(URL, commaSeparated, start, end);
+        String formattedUrl = format(URL, commaSeparated, startStr, endStr);
         String json = restTemplate.getForObject(formattedUrl, String.class);
         List<Fund> funds = getFunds(json, commaSeparated);
 
         // second request
         commaSeparated = FundType.commaSeparated(20, 39);
-        formattedUrl = format(URL, commaSeparated, start, end);
+        formattedUrl = format(URL, commaSeparated, startStr, endStr);
         json = restTemplate.getForObject(formattedUrl, String.class);
         funds.addAll(getFunds(json, commaSeparated));
 
         // final request
         commaSeparated = FundType.commaSeparated(40, 45);
-        formattedUrl = format(URL, commaSeparated, start, end);
+        formattedUrl = format(URL, commaSeparated, startStr, endStr);
         json = restTemplate.getForObject(formattedUrl, String.class);
         funds.addAll(getFunds(json, commaSeparated));
 

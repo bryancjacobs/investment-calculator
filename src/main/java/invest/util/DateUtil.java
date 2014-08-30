@@ -1,5 +1,7 @@
 package invest.util;
 
+import org.joda.time.DateTime;
+
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -27,6 +29,10 @@ public class DateUtil {
     public static String toStr(Date date) {
         return dayOfWeek.format(date);
 
+    }
+
+    public static DateTime threeMonthsBefore(DateTime date) {
+        return new DateTime(date).minusMonths(3);
     }
 
 }

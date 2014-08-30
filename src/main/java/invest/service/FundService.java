@@ -4,6 +4,7 @@ import invest.model.Fund;
 import invest.model.Quote;
 import invest.repo.FundRepo;
 import invest.util.BigDecimalUtil;
+import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -11,6 +12,7 @@ import java.math.BigDecimal;
 import java.util.List;
 
 import static invest.util.BigDecimalUtil.newBigDecimal;
+import static invest.util.DateUtil.threeMonthsBefore;
 
 /**
  * User: Bryan
@@ -25,7 +27,11 @@ public class FundService {
 
     public List<Fund> getWithPercentageChange() {
 
-        List<Fund> funds = fundRepo.getAll();
+        DateTime now = DateTime.now();
+
+        DateTime threeMonthsBefore = threeMonthsBefore(now);
+
+        List<Fund> funds = fundRepo.getBetween(threeMonthsBefore, now);
 
         for (Fund fund : funds) {
 
