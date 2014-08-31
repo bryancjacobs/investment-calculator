@@ -28,7 +28,7 @@ public class DateUtilTest {
         // Jan 1st 10:00 am
         DateTime date = new DateTime(2014, 4, 1, 10, 0);
 
-        DateTime actual = DateUtil.threeMonthsBefore(date);
+        DateTime actual = DateUtil.monthsBefore(date, 3);
 
         int month = actual.get(DateTimeFieldType.monthOfYear());
 

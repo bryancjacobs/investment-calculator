@@ -12,7 +12,7 @@ import java.math.BigDecimal;
 import java.util.List;
 
 import static invest.util.BigDecimalUtil.newBigDecimal;
-import static invest.util.DateUtil.threeMonthsBefore;
+import static invest.util.DateUtil.monthsBefore;
 
 /**
  * User: Bryan
@@ -29,7 +29,7 @@ public class FundService {
 
         DateTime now = DateTime.now();
 
-        DateTime threeMonthsBefore = threeMonthsBefore(now);
+        DateTime threeMonthsBefore = monthsBefore(now, 3);
 
         List<Fund> funds = fundRepo.getBetween(threeMonthsBefore, now);
 

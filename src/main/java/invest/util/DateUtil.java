@@ -31,8 +31,8 @@ public class DateUtil {
 
     }
 
-    public static DateTime threeMonthsBefore(DateTime date) {
-        return new DateTime(date).minusMonths(3);
+    public static DateTime monthsBefore(DateTime date, int monthsBefore) {
+        return new DateTime(date).minusMonths(monthsBefore);
     }
 
 }

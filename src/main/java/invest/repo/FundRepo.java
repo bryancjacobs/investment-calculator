@@ -43,13 +43,7 @@ public class FundRepo {
         List<Fund> funds = getFunds(json, commaSeparated);
 
         // second request
-        commaSeparated = FundType.commaSeparated(20, 39);
-        formattedUrl = format(URL, commaSeparated, startStr, endStr);
-        json = restTemplate.getForObject(formattedUrl, String.class);
-        funds.addAll(getFunds(json, commaSeparated));
-
-        // final request
-        commaSeparated = FundType.commaSeparated(40, 45);
+        commaSeparated = FundType.commaSeparated(20, 45);
         formattedUrl = format(URL, commaSeparated, startStr, endStr);
         json = restTemplate.getForObject(formattedUrl, String.class);
         funds.addAll(getFunds(json, commaSeparated));
