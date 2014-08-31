@@ -25,7 +25,7 @@ public class FundService {
     @Autowired
     FundRepo fundRepo;
 
-    public List<Fund> getWithPercentageChange() {
+    public List<Fund> getFunds() {
 
         DateTime now = DateTime.now();
 

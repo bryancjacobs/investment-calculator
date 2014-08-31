@@ -8,6 +8,8 @@ import invest.util.DateUtil;
 import net.minidev.json.JSONArray;
 import net.minidev.json.JSONObject;
 import org.joda.time.DateTime;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.client.RestTemplate;
@@ -28,6 +30,10 @@ public class FundRepo {
 
     public static final String URL = "https://query.yahooapis.com/v1/public/yql?q=select * from yahoo.finance.historicaldata where symbol in (%s) and startDate = \"%s\" and endDate = \"%s\" | sort(field=\"Date\")&format=json&env=store://datatables.org/alltableswithkeys&callback=";
 
+    public static final String URL_MSG = "YQL URL: %s";
+
+    private Logger logger = LoggerFactory.getLogger(FundRepo.class);
+
     @Autowired
     RestTemplate restTemplate;
 
@@ -39,12 +45,16 @@ public class FundRepo {
         // first request
         String commaSeparated = FundType.commaSeparated(0, 19);
         String formattedUrl = format(URL, commaSeparated, startStr, endStr);
+        logger.info(String.format(URL_MSG, formattedUrl));
+
         String json = restTemplate.getForObject(formattedUrl, String.class);
         List<Fund> funds = getFunds(json, commaSeparated);
 
         // second request
         commaSeparated = FundType.commaSeparated(20, 45);
         formattedUrl = format(URL, commaSeparated, startStr, endStr);
+        logger.info(String.format(URL_MSG, formattedUrl));
+
         json = restTemplate.getForObject(formattedUrl, String.class);
         funds.addAll(getFunds(json, commaSeparated));
 
