@@ -55,16 +55,14 @@ public class FundService {
                 Double nextAdjusted = next.getAdjusted();
 
                 // calculate percentage increase --- negative means percentage decrease
-                BigDecimal difference = newBigDecimal(nextAdjusted).subtract(newBigDecimal(originalAdjusted), newMC());
-                BigDecimal divide = difference.divide(newBigDecimal(originalAdjusted), newMC());
-                BigDecimal change = divide.multiply(newBigDecimal(100.0), newMC());
+                BigDecimal change = percentageChange(nextAdjusted, originalAdjusted);
                 current.setChange(change.doubleValue());
 
                 total = total.add(BigDecimal.valueOf(current.getChange()));
             }
 
             // subtract one from the collection because the changes only have 12 since the last week has nothing to compare
-            BigDecimal averageChange = total.divide(BigDecimal.valueOf(quotes.size() - 1), 2, ROUND);
+            BigDecimal averageChange = total.divide(BigDecimal.valueOf(quotes.size() - 1), newMC());
 
             fund.setAverageChange(averageChange.doubleValue());
         }

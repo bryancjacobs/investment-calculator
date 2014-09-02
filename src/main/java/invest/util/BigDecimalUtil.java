@@ -22,4 +22,13 @@ public class BigDecimalUtil {
         return new MathContext(PRECISION, ROUND);
     }
 
+    public static BigDecimal percentageChange(Double nextAdjusted, Double originalAdjusted) {
+
+        BigDecimal difference = newBigDecimal(nextAdjusted).subtract(newBigDecimal(originalAdjusted), newMC());
+
+        BigDecimal divide = difference.divide(newBigDecimal(originalAdjusted), newMC());
+
+        return divide.multiply(newBigDecimal(100.0), newMC());;
+    }
+
 }
