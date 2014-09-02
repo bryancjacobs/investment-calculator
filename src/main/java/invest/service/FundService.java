@@ -3,7 +3,6 @@ package invest.service;
 import invest.model.Fund;
 import invest.model.Quote;
 import invest.repo.FundRepo;
-import invest.util.BigDecimalUtil;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -11,7 +10,7 @@ import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
 import java.util.List;
 
-import static invest.util.BigDecimalUtil.newBigDecimal;
+import static invest.util.BigDecimalUtil.*;
 import static invest.util.DateUtil.monthsBefore;
 
 /**
@@ -53,18 +52,19 @@ public class FundService {
 
                 Double originalAdjusted = current.getAdjusted();
 
-                Double newAdjusted = next.getAdjusted();
+                Double nextAdjusted = next.getAdjusted();
 
-                // calculate percentage increase - if negative then we have percentage decrease
-                BigDecimal change = newBigDecimal(((newAdjusted - originalAdjusted) / originalAdjusted) * 100);
-
+                // calculate percentage increase --- negative means percentage decrease
+                BigDecimal difference = newBigDecimal(nextAdjusted).subtract(newBigDecimal(originalAdjusted), newMC());
+                BigDecimal divide = difference.divide(newBigDecimal(originalAdjusted), newMC());
+                BigDecimal change = divide.multiply(newBigDecimal(100.0), newMC());
                 current.setChange(change.doubleValue());
 
                 total = total.add(BigDecimal.valueOf(current.getChange()));
             }
 
             // subtract one from the collection because the changes only have 12 since the last week has nothing to compare
-            BigDecimal averageChange = total.divide(BigDecimal.valueOf(quotes.size() - 1), 2, BigDecimalUtil.ROUND);
+            BigDecimal averageChange = total.divide(BigDecimal.valueOf(quotes.size() - 1), 2, ROUND);
 
             fund.setAverageChange(averageChange.doubleValue());
         }

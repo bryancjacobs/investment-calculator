@@ -1,6 +1,7 @@
 package invest.util;
 
 import java.math.BigDecimal;
+import java.math.MathContext;
 import java.math.RoundingMode;
 
 /**
@@ -11,9 +12,14 @@ import java.math.RoundingMode;
 public class BigDecimalUtil {
 
     public static final RoundingMode ROUND = RoundingMode.HALF_UP;
+    public static final int PRECISION = 2;
 
     public static BigDecimal newBigDecimal(Double value) {
-        return BigDecimal.valueOf(value).setScale(2, ROUND);
+        return BigDecimal.valueOf(value).setScale(PRECISION, ROUND);
+    }
+
+    public static MathContext newMC() {
+        return new MathContext(PRECISION, ROUND);
     }
 
 }
