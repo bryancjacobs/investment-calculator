@@ -28,7 +28,7 @@ public class BigDecimalUtil {
 
         BigDecimal divide = difference.divide(newBigDecimal(originalAdjusted), newMC());
 
-        return divide.multiply(newBigDecimal(100.0), newMC());;
+        return divide.multiply(newBigDecimal(100.0), newMC());
     }
 
 }
