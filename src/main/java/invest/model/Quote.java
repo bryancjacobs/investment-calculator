@@ -18,6 +18,8 @@ public class Quote {
 
     private Date date;
 
+    private Integer rank;
+
     @JsonIgnore
     public boolean isWednesday() {
 
@@ -55,6 +57,14 @@ public class Quote {
         this.date = date;
     }
 
+    public Integer getRank() {
+        return rank;
+    }
+
+    public void setRank(Integer rank) {
+        this.rank = rank;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -65,8 +75,8 @@ public class Quote {
         if (adjusted != null ? !adjusted.equals(quote.adjusted) : quote.adjusted != null) return false;
         if (change != null ? !change.equals(quote.change) : quote.change != null) return false;
         if (date != null ? !date.equals(quote.date) : quote.date != null) return false;
+        return !(rank != null ? !rank.equals(quote.rank) : quote.rank != null);
 
-        return true;
     }
 
     @Override
@@ -74,6 +84,7 @@ public class Quote {
         int result = adjusted != null ? adjusted.hashCode() : 0;
         result = 31 * result + (change != null ? change.hashCode() : 0);
         result = 31 * result + (date != null ? date.hashCode() : 0);
+        result = 31 * result + (rank != null ? rank.hashCode() : 0);
         return result;
     }
 
@@ -83,6 +94,7 @@ public class Quote {
                 "adjusted=" + adjusted +
                 ", change=" + change +
                 ", date=" + date +
+                ", rank=" + rank +
                 '}';
     }
 }

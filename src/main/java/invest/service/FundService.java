@@ -36,9 +36,10 @@ public class FundService {
 
             int limit = fund.getQuotes().size() - 1;
 
-            List<Quote> quotes = fund.getQuotes();
+            // find the most current quote and compare all other quotes to this one
+            Quote compareToQuote = fund.getQuotes().get(limit);
 
-            BigDecimal total = newBigDecimal(0.0);
+            List<Quote> quotes = fund.getQuotes();
 
             for (int i = 0; i <= limit; i++) {
 
@@ -46,25 +47,17 @@ public class FundService {
                     break;
                 }
 
-                Quote current = quotes.get(i);
+                Quote quote = quotes.get(i);
 
-                Quote next = quotes.get(i + 1);
+                Double original = quote.getAdjusted();
 
-                Double originalAdjusted = current.getAdjusted();
-
-                Double nextAdjusted = next.getAdjusted();
+                Double current = compareToQuote.getAdjusted();
 
                 // calculate percentage increase --- negative means percentage decrease
-                BigDecimal change = percentageChange(nextAdjusted, originalAdjusted);
-                current.setChange(change.doubleValue());
+                BigDecimal change = percentageChange(current, original);
 
-                total = total.add(BigDecimal.valueOf(current.getChange()));
+                quote.setChange(change.doubleValue());
             }
-
-            // subtract one from the collection because the changes only have 12 since the last week has nothing to compare
-            BigDecimal averageChange = total.divide(BigDecimal.valueOf(quotes.size() - 1), newMC());
-
-            fund.setAverageChange(averageChange.doubleValue());
         }
 
         return funds;

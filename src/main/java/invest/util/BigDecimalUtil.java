@@ -22,11 +22,11 @@ public class BigDecimalUtil {
         return new MathContext(PRECISION, ROUND);
     }
 
-    public static BigDecimal percentageChange(Double nextAdjusted, Double originalAdjusted) {
+    public static BigDecimal percentageChange(Double current, Double starting) {
 
-        BigDecimal difference = newBigDecimal(nextAdjusted).subtract(newBigDecimal(originalAdjusted), newMC());
+        BigDecimal difference = newBigDecimal(current).subtract(newBigDecimal(starting), newMC());
 
-        BigDecimal divide = difference.divide(newBigDecimal(originalAdjusted), newMC());
+        BigDecimal divide = difference.divide(newBigDecimal(starting), newMC());
 
         return divide.multiply(newBigDecimal(100.0), newMC());
     }
