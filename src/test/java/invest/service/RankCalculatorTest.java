@@ -56,26 +56,26 @@ public class RankCalculatorTest {
 
         // assert fbmpx
         {
-            {
-                Fund fbiox = funds.get(1);
-                assertThat(fbiox, is(notNullValue()));
 
-                List<Quote> quotes = fbiox.getQuotes();
-                assertThat(quotes, is(notNullValue()));
-                assertThat(quotes, hasSize(3));
+            Fund fbiox = funds.get(1);
+            assertThat(fbiox, is(notNullValue()));
 
-                Quote quote = quotes.get(0);
-                assertThat(quote, is(notNullValue()));
-                assertThat(quote.getRank(), is(1));
+            List<Quote> quotes = fbiox.getQuotes();
+            assertThat(quotes, is(notNullValue()));
+            assertThat(quotes, hasSize(3));
 
-                quote = quotes.get(1);
-                assertThat(quote, is(notNullValue()));
-                assertThat(quote.getRank(), is(1));
+            Quote quote = quotes.get(0);
+            assertThat(quote, is(notNullValue()));
+            assertThat(quote.getRank(), is(1));
 
-                quote = quotes.get(2);
-                assertThat(quote, is(notNullValue()));
-                assertThat(quote.getRank(), is(1));
-            }
+            quote = quotes.get(1);
+            assertThat(quote, is(notNullValue()));
+            assertThat(quote.getRank(), is(1));
+
+            quote = quotes.get(2);
+            assertThat(quote, is(notNullValue()));
+            assertThat(quote.getRank(), is(1));
+
         }
 
     }
