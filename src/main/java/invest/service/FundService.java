@@ -22,7 +22,7 @@ public class FundService {
     FundRepo fundRepo;
 
     @Autowired
-    FundCalculator calculatorManager;
+    FundCalculator fundCalculator;
 
     public List<Fund> getFunds() {
 
@@ -32,7 +32,7 @@ public class FundService {
 
         List<Fund> funds = fundRepo.getBetween(threeMonthsBefore, now);
 
-        calculatorManager.calculate(funds);
+        fundCalculator.calculate(funds);
 
         return funds;
     }
