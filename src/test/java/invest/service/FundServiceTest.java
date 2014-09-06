@@ -10,6 +10,7 @@ import org.junit.Test;
 import org.mockito.Mockito;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static org.hamcrest.Matchers.*;
@@ -25,15 +26,24 @@ public class FundServiceTest {
 
     private static FundRepo mockFundRepo;
 
-    private static FundService fundService;
+    private static FundService fundService = new FundService();
+
+    private static FundCalculator calculator = new FundCalculator();
 
     @BeforeClass
     public static void beforeClass() {
         mockFundRepo = Mockito.mock(FundRepo.class);
 
+        fundService.fundRepo = mockFundRepo;
+
+        fundService.calculatorManager = calculator;
+
+        calculator.calculateables = Arrays.asList(new RankCalculator(), new ChangeCalculator());
+
         List<Fund> funds = new ArrayList<>();
         List<Quote> quotes = new ArrayList<>();
 
+        when(mockFundRepo.getBetween(any(DateTime.class), any(DateTime.class))).thenReturn(funds);
 
         Fund fund = new Fund();
         fund.setName(FundType.FBIOX.name());
@@ -52,12 +62,6 @@ public class FundServiceTest {
 
         fund.setQuotes(quotes);
         funds.add(fund);
-
-
-        when(mockFundRepo.getBetween(any(DateTime.class), any(DateTime.class))).thenReturn(funds);
-
-        fundService = new FundService();
-        fundService.fundRepo = mockFundRepo;
     }
 
     @Test
