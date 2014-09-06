@@ -17,9 +17,10 @@ import java.util.List;
 public class RankCalculator implements Calculateable {
     @Override
     public void calculate(List<Fund> funds) {
-        int totalWeeks = 12;
+        // the first week is zero...so the count is 0,1,2,...
+        int totalWeeks = funds.get(0).getQuotes().size() - 1;
 
-        for (int week = 1; week <= totalWeeks; week++) {
+        for (int week = 0; week <= totalWeeks; week++) {
             List<Quote> quotes = getQuotesByWeek(funds, week);
 
             Collections.sort(quotes, new QuoteComparator());
@@ -29,15 +30,16 @@ public class RankCalculator implements Calculateable {
             for (int i = 0; i < quotes.size(); i++) {
 
                 Quote current = quotes.get(i);
-                Quote previous = quotes.get(i - 1);
 
                 if (i == 0) {
                     current.setRank(rank);
                 }
                 else{
 
+                    Quote previous = quotes.get(i - 1);
+
                     if (current.getChange().equals(previous.getChange())) {
-                        current.setChange(previous.getChange());
+                        current.setRank(previous.getRank());
                     } else {
                         current.setRank(++rank);
                     }
@@ -60,7 +62,7 @@ public class RankCalculator implements Calculateable {
 
         @Override
         public int compare(Quote o1, Quote o2) {
-            return o1.getChange().compareTo(o2.getChange());
+            return o2.getChange().compareTo(o1.getChange());
         }
     }
 }
