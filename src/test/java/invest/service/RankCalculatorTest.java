@@ -39,7 +39,7 @@ public class RankCalculatorTest {
 
             List<Quote> quotes = fbiox.getQuotes();
             assertThat(quotes, is(notNullValue()));
-            assertThat(quotes, hasSize(3));
+            assertThat(quotes, hasSize(4));
 
             Quote quote = quotes.get(0);
             assertThat(quote, is(notNullValue()));
@@ -62,7 +62,7 @@ public class RankCalculatorTest {
 
             List<Quote> quotes = fbiox.getQuotes();
             assertThat(quotes, is(notNullValue()));
-            assertThat(quotes, hasSize(3));
+            assertThat(quotes, hasSize(4));
 
             Quote quote = quotes.get(0);
             assertThat(quote, is(notNullValue()));
@@ -102,6 +102,9 @@ public class RankCalculatorTest {
         quote.setChange(3.22);
         quotes.add(quote);
 
+        quote = new Quote();
+        quotes.add(quote);
+
         fund.setQuotes(quotes);
         funds.add(fund);
 
@@ -122,6 +125,9 @@ public class RankCalculatorTest {
 
         quote = new Quote();
         quote.setChange(4.11);
+        quotes.add(quote);
+
+        quote = new Quote();
         quotes.add(quote);
 
         funds.add(fund);

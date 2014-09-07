@@ -37,8 +37,6 @@
                         thead.append(trHead);
                         var thName = $("<th/>").text("Name");
                         trHead.append(thName);
-                        var thAverageChange = $("<th/>").text("Average Change");
-                        trHead.append(thAverageChange);
 
                         $.each(val.quotes, function (key) {
                             var week = (key + 1);
@@ -57,12 +55,10 @@
                     table.append(tr);
                     var nameTd = $("<td/>").text(val.name);
                     tr.append(nameTd);
-                    var averageChangeTd = $("<td/>").text(val.averageChange);
-                    tr.append(averageChangeTd);
 
                     $.each(val.quotes, function (key, val) {
                         // construct data
-                        var adjustedTd = $("<td/>").text(val.change);
+                        var adjustedTd = $("<td/>").text(val.rank);
                         tr.append(adjustedTd);
 
                         console.log("val: " + val.adjusted);

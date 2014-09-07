@@ -1,9 +1,10 @@
 package invest.service;
 
 import invest.model.Fund;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.PostConstruct;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -13,13 +14,19 @@ import java.util.List;
 @Component
 public class FundCalculator {
 
-    @Autowired
+    // because order matters don't autowire
     List<Calculateable> calculateables;
 
     public void calculate(List<Fund> funds) {
+
         for (Calculateable calculateable : calculateables) {
             calculateable.calculate(funds);
         }
+    }
+
+    @PostConstruct
+    void postConstruct() {
+        calculateables = Arrays.asList(new ChangeCalculator(), new RankCalculator());
     }
 
 }

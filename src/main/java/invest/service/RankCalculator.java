@@ -18,7 +18,8 @@ public class RankCalculator implements Calculateable {
     @Override
     public void calculate(List<Fund> funds) {
         // the first week is zero...so the count is 0,1,2,...
-        int totalWeeks = funds.get(0).getQuotes().size() - 1;
+        // -1 because of zero based and another -1 because the last week percent is 0
+        int totalWeeks = funds.get(0).getQuotes().size() - 1 - 1;
 
         for (int week = 0; week <= totalWeeks; week++) {
             List<Quote> quotes = getQuotesByWeek(funds, week);
@@ -33,8 +34,7 @@ public class RankCalculator implements Calculateable {
 
                 if (i == 0) {
                     current.setRank(rank);
-                }
-                else{
+                } else {
 
                     Quote previous = quotes.get(i - 1);
 
@@ -62,7 +62,12 @@ public class RankCalculator implements Calculateable {
 
         @Override
         public int compare(Quote o1, Quote o2) {
-            return o2.getChange().compareTo(o1.getChange());
+
+            Double c2 = o2.getChange();
+
+            Double c1 = o1.getChange();
+
+            return c2.compareTo(c1);
         }
     }
 }
