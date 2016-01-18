@@ -67,6 +67,18 @@ public class RankCalculator implements Calculateable {
 
             Double c1 = o1.getChange();
 
+            if (c2 != null && c1 == null) {
+                return 1;
+            }
+
+            if (c2 == null && c1 != null) {
+                return -1;
+            }
+
+            if (c2 == null && c1 == null) {
+                return 0;
+            }
+
             return c2.compareTo(c1);
         }
     }

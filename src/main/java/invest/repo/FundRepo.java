@@ -65,11 +65,20 @@ public class FundRepo {
         List<Fund> funds = new ArrayList<>();
 
         for (FundType fundType : FundType.commaToFundTypes(commaSeparated)) {
+
             List<Quote> quotes = create(json, format("$.query.results.quote[?(@.Symbol == '%s')]", fundType.name()));
             Fund fund = new Fund();
             fund.setName(fundType.name());
             fund.setQuotes(quotes);
-            funds.add(fund);
+
+            if (quotes.size() == 13) {
+
+                funds.add(fund);
+            }
+            else{
+                System.out.println(fund);
+            }
+
         }
         return funds;
     }
