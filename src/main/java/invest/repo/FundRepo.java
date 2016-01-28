@@ -8,6 +8,7 @@ import invest.util.DateUtil;
 import net.minidev.json.JSONArray;
 import net.minidev.json.JSONObject;
 import org.joda.time.DateTime;
+import org.joda.time.Weeks;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,6 +40,8 @@ public class FundRepo {
 
     public List<Fund> getBetween(DateTime start, DateTime end) {
 
+        int numberOfWeeks = Math.abs(Weeks.weeksBetween(end, start).getWeeks());
+
         String startStr = toStr(start);
         String endStr = toStr(end);
 
@@ -48,7 +51,7 @@ public class FundRepo {
         logger.info(String.format(URL_MSG, formattedUrl));
 
         String json = restTemplate.getForObject(formattedUrl, String.class);
-        List<Fund> funds = getFunds(json, commaSeparated);
+        List<Fund> funds = getFunds(json, commaSeparated, numberOfWeeks);
 
         // second request
         commaSeparated = FundType.commaSeparated(20, 45);
@@ -56,12 +59,12 @@ public class FundRepo {
         logger.info(String.format(URL_MSG, formattedUrl));
 
         json = restTemplate.getForObject(formattedUrl, String.class);
-        funds.addAll(getFunds(json, commaSeparated));
+        funds.addAll(getFunds(json, commaSeparated, numberOfWeeks));
 
         return funds;
     }
 
-    private List<Fund> getFunds(String json, String commaSeparated) {
+    private List<Fund> getFunds(String json, String commaSeparated, int weeks) {
         List<Fund> funds = new ArrayList<>();
 
         for (FundType fundType : FundType.commaToFundTypes(commaSeparated)) {
@@ -71,7 +74,7 @@ public class FundRepo {
             fund.setName(fundType.name());
             fund.setQuotes(quotes);
 
-            if (quotes.size() == 13) {
+            if (quotes.size() -1 == weeks) {
 
                 funds.add(fund);
             }

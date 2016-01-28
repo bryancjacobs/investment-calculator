@@ -2,7 +2,6 @@ package invest.repo;
 
 import invest.it.IntegrationTest;
 import invest.model.Fund;
-import invest.model.FundType;
 import invest.model.Quote;
 import org.joda.time.DateTime;
 import org.junit.Test;
@@ -24,14 +23,12 @@ public class FundRepoIT extends IntegrationTest {
     FundRepo fundRepo;
 
     @Test
-    public void shouldGetFundsBetweenStartAndEnd() {
+    public void shouldGetOnlyQuotesOnWednesday() {
         DateTime end = new DateTime(2014, 4, 3, 10, 0);
 
         DateTime start = monthsBefore(end, 1);
 
         List<Fund> funds = fundRepo.getBetween(start, end);
-
-        assertTrue(funds.size() == FundType.values().length);
 
         for (Fund fund : funds) {
             for (Quote quote : fund.getQuotes()) {
