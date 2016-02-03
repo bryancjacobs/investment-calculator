@@ -24,6 +24,7 @@ public class FundRest {
 
     @RequestMapping(method = RequestMethod.GET)
     public List<Fund> getWithPercentageChange() {
-        return fundService.getFunds();
+        List<Fund> funds = fundService.getFunds();
+        return funds;
     }
 }

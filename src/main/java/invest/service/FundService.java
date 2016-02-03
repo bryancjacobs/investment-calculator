@@ -29,7 +29,7 @@ public class FundService {
 
         DateTime now = DateTime.now();
 
-        DateTime threeMonthsBefore = weeksBefore(now, 12);
+        DateTime threeMonthsBefore = weeksBefore(now, 13);
 
         List<Fund> funds = fundRepo.getBetween(threeMonthsBefore, now);
 
