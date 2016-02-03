@@ -74,7 +74,7 @@ public class FundRepo {
             fund.setName(fundType.name());
             fund.setQuotes(quotes);
 
-            if (quotes.size() -1 == weeks) {
+            if (quotes.size() == weeks) {
 
                 funds.add(fund);
             }

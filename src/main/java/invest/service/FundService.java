@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 import static invest.util.DateUtil.monthsBefore;
+import static invest.util.DateUtil.weeksBefore;
 
 /**
  * User: Bryan
@@ -28,7 +29,7 @@ public class FundService {
 
         DateTime now = DateTime.now();
 
-        DateTime threeMonthsBefore = monthsBefore(now, 3);
+        DateTime threeMonthsBefore = weeksBefore(now, 12);
 
         List<Fund> funds = fundRepo.getBetween(threeMonthsBefore, now);
 

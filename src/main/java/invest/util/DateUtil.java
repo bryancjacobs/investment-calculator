@@ -35,4 +35,8 @@ public class DateUtil {
         return new DateTime(date).minusMonths(monthsBefore);
     }
 
+    public static DateTime weeksBefore(DateTime beforeDate, int weeks) {
+        return new DateTime((beforeDate).minusWeeks(weeks));
+    }
+
 }
